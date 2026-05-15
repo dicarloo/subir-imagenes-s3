@@ -3,6 +3,7 @@ const express = require('express')
 const multer = require('multer')
 const { v4: uuidv4 } = require('uuid')
 const { subirImagen } = require('./s3')
+const { limpiarNombre } = require('./validaciones')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -45,7 +46,8 @@ app.post('/subir', upload.single('imagen'), async (req, res) => {
     return res.status(400).json({ error: 'no se recibio ninguna imagen' })
   }
 
-  const nombreArchivo = `${uuidv4()}-${req.file.originalname}`
+  const nombreLimpio = limpiarNombre(req.file.originalname)
+  const nombreArchivo = `${uuidv4()}-${nombreLimpio}`
 
   // const nombreArchivo = req.file.originalname
   // const nombreArchivo = Date.now() + '_' + req.file.originalname
