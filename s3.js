@@ -1,4 +1,4 @@
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3')
+const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 
 // const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3')
 // const { getSignedUrl } = require('@aws-sdk/s3-request-presigner')
@@ -30,9 +30,17 @@ async function subirImagen({ nombre, buffer, tipo }) {
   const url = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/imagenes/${nombre}`
 
   // const url = await getUrlFirmada(nombre)
-  // console.log('url armada:', url)
 
   return url
+}
+
+async function eliminarImagen(nombre) {
+  // console.log('eliminando:', nombre)
+  const comando = new DeleteObjectCommand({
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: `imagenes/${nombre}`
+  })
+  await cliente.send(comando)
 }
 
 // async function getUrlFirmada(nombre) {
@@ -44,4 +52,4 @@ async function subirImagen({ nombre, buffer, tipo }) {
 //   return url
 // }
 
-module.exports = { subirImagen }
+module.exports = { subirImagen, eliminarImagen }
