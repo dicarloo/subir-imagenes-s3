@@ -1,7 +1,7 @@
 const express = require('express')
 const multer = require('multer')
 const { v4: uuidv4 } = require('uuid')
-const { subirImagen } = require('../s3')
+const { subirImagen, eliminarImagen } = require('../s3')
 const { limpiarNombre } = require('../validaciones')
 
 const router = express.Router()
@@ -53,5 +53,27 @@ router.post('/subir', upload.single('imagen'), async (req, res) => {
     return res.status(500).json({ error: 'no se pudo subir' })
   }
 })
+
+router.delete('/eliminar/:nombre', async (req, res) => {
+  const { nombre } = req.params
+
+  if (!nombre) {
+    return res.status(400).json({ error: 'falta el nombre' })
+  }
+
+  // console.log('eliminando archivo:', nombre)
+
+  try {
+    await eliminarImagen(nombre)
+    return res.json({ ok: true, eliminado: nombre })
+  } catch (err) {
+    console.error('error eliminando de s3:', err.message)
+    return res.status(500).json({ error: 'no se pudo eliminar' })
+  }
+})
+
+// router.get('/lista', async (req, res) => {
+//   // esto lo deje pendiente, falta implementar listado del bucket
+// })
 
 module.exports = router
