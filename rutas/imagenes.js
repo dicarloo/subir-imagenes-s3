@@ -3,6 +3,7 @@ const multer = require('multer')
 const { v4: uuidv4 } = require('uuid')
 const { subirImagen, eliminarImagen } = require('../s3')
 const { limpiarNombre } = require('../validaciones')
+const { validarImagen } = require('../middlewares/validarImagen')
 
 const router = express.Router()
 
@@ -25,12 +26,8 @@ const upload = multer({
 //   res.json({ url })
 // })
 
-router.post('/subir', upload.single('imagen'), async (req, res) => {
+router.post('/subir', upload.single('imagen'), validarImagen, async (req, res) => {
   // console.log('[ruta imagenes] archivo recibido:', req.file?.originalname)
-
-  if (!req.file) {
-    return res.status(400).json({ error: 'falta la imagen' })
-  }
 
   const nombreLimpio = limpiarNombre(req.file.originalname)
   const nombreFinal = `${uuidv4()}-${nombreLimpio}`
