@@ -1,17 +1,8 @@
-const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3')
+const { PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3')
+const { cliente } = require('./config/s3Config')
 
 // const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3')
 // const { getSignedUrl } = require('@aws-sdk/s3-request-presigner')
-
-const cliente = new S3Client({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-  }
-})
-
-// const cliente = new S3Client({ region: process.env.AWS_REGION })
 
 async function subirImagen({ nombre, buffer, tipo }) {
   const params = {
