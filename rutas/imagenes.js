@@ -1,25 +1,13 @@
 const express = require('express')
-const multer = require('multer')
 const { v4: uuidv4 } = require('uuid')
 const { subirImagen, eliminarImagen } = require('../s3')
 const { limpiarNombre } = require('../validaciones')
 const { validarImagen } = require('../middlewares/validarImagen')
+const { upload } = require('../config/multerConfig')
+
+// const multer = require('multer')
 
 const router = express.Router()
-
-const storage = multer.memoryStorage()
-const upload = multer({
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => {
-    const permitidos = ['image/jpeg', 'image/png', 'image/webp']
-    if (permitidos.includes(file.mimetype)) {
-      cb(null, true)
-    } else {
-      cb(new Error('formato no permitido'))
-    }
-  }
-})
 
 // router.post('/', upload.single('imagen'), async (req, res) => {
 //   const url = await subirImagen(...)
