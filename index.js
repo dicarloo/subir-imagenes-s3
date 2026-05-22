@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const rutaImagenes = require('./rutas/imagenes')
+const rutaHealth = require('./rutas/health')
 
 // const multer = require('multer')
 // const { v4: uuidv4 } = require('uuid')
@@ -12,10 +13,7 @@ const PORT = process.env.PORT || 3000
 
 app.use(express.json())
 
-app.get('/', (req, res) => {
-  res.json({ status: 'ok' })
-})
-
+app.use('/', rutaHealth)
 app.use('/imagenes', rutaImagenes)
 
 // app.post('/subir', upload.single('imagen'), async (req, res) => {
