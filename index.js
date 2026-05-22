@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const rutaImagenes = require('./rutas/imagenes')
 const rutaHealth = require('./rutas/health')
+const { logger } = require('./middlewares/logger')
 
 // const multer = require('multer')
 // const { v4: uuidv4 } = require('uuid')
@@ -12,6 +13,7 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 app.use(express.json())
+app.use(logger)
 
 app.use('/', rutaHealth)
 app.use('/imagenes', rutaImagenes)
