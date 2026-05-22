@@ -12,14 +12,18 @@ function validarTamano(bytes, maxMB = 5) {
 }
 
 function limpiarNombre(nombre) {
-  return nombre
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9.\-_]/g, '')
+  const sinEspacios = nombre.toLowerCase().replace(/\s+/g, '-')
+  const limpio = sinEspacios.replace(/[^a-z0-9.\-_]/g, '')
+  // console.log('nombre limpio:', limpio)
+  return limpio
 }
 
 // function limpiarNombre(nombre) {
 //   return nombre.replace(/ /g, '_')
 // }
 
-module.exports = { validarTamano, limpiarNombre }
+function obtenerExtension(nombre) {
+  return nombre.split('.').pop().toLowerCase()
+}
+
+module.exports = { validarTamano, limpiarNombre, obtenerExtension }
